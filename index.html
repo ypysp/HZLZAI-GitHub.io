@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>珠宝饰品设计稿 - 网格展示系统</title>
+    <title>珠宝饰品设计稿 - 移动优化版</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -11,12 +11,13 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
             background: linear-gradient(135deg, #f9f7f0 0%, #f0e8e1 100%);
             min-height: 100vh;
-            padding: 40px 20px;
+            padding: 20px 15px;
             color: #333;
             position: relative;
         }
@@ -28,47 +29,47 @@
 
         header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             position: relative;
             animation: fadeInDown 0.8s ease;
         }
 
         h1 {
-            font-size: 2.8rem;
+            font-size: 1.8rem;
             color: #8b5a2b;
             margin-bottom: 15px;
             position: relative;
             display: inline-block;
             font-weight: 700;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
         }
 
         h1:after {
             content: '';
             display: block;
-            width: 100px;
-            height: 4px;
+            width: 70px;
+            height: 3px;
             background: linear-gradient(to right, #d4af37, #8b5a2b);
-            margin: 15px auto;
+            margin: 12px auto;
             border-radius: 2px;
         }
 
         .subtitle {
             color: #a67c52;
-            font-size: 1.2rem;
-            margin-bottom: 25px;
+            font-size: 1rem;
+            margin-bottom: 15px;
             font-weight: 300;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.3px;
+            padding: 0 10px;
         }
 
         .dashboard {
             background-color: rgba(255, 255, 255, 0.95);
-            border-radius: 18px;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+            border-radius: 16px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
             overflow: hidden;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             position: relative;
-            overflow: hidden;
             border: 1px solid #f0e6d8;
             animation: slideUp 0.6s ease-out;
         }
@@ -79,15 +80,15 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 8px;
+            height: 6px;
             background: linear-gradient(90deg, #d4af37, #8b5a2b);
         }
 
         .dashboard-header {
-            padding: 25px 30px;
+            padding: 20px;
             display: flex;
             flex-wrap: wrap;
-            gap: 20px;
+            gap: 15px;
             justify-content: space-between;
             align-items: center;
             background: linear-gradient(to right, #d4af37, #8b5a2b);
@@ -96,23 +97,25 @@
         }
 
         .dashboard-header h2 {
-            font-size: 1.8rem;
+            font-size: 1.3rem;
             font-weight: 600;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 8px;
+            width: 極速加载100%;
         }
 
         .dashboard-header h2 i {
-            font-size: 1.4rem;
+            font-size: 1.1rem;
             color: #ffd700;
         }
 
         .controls {
             display: flex;
             flex-wrap: wrap;
-            gap: 20px;
+            gap: 15px;
             align-items: center;
+            width: 100%;
         }
 
         .search-box {
@@ -120,75 +123,66 @@
             display: flex;
             align-items: center;
             transition: all 0.3s ease;
+            width: 100%;
         }
 
         .search-box input {
-            padding: 12px 18px 12px 45px;
+            padding: 12px 15px 12px 40px;
             border: none;
             border-radius: 30px;
             background-color: rgba(255, 255, 255, 0.95);
-            width: 300px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            width: 100%;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
             transition: all 0.3s ease;
-            font-size: 1rem;
+            font-size: 0.95rem;
             color: #5d4037;
         }
 
         .search-box input:focus {
             outline: none;
             box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.4);
-            width: 350px;
         }
 
         .search-icon {
             position: absolute;
-            left: 18px;
+            left: 15px;
             color: #a67c52;
-            font-size: 18px;
+            font-size: 16px;
         }
 
-        .items-per-page {
+        .control-group {
             display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 1.05rem;
+            flex-wrap: wrap;
+            gap: 15px;
+            width: 100%;
         }
 
-        .items-per-page select {
-            padding: 9px 16px;
+        .filter-section {
+            flex: 1;
+            min-width: 45%;
+        }
+
+        .filter-section label {
+            display: block;
+            font-size: 0.9rem;
+            margin-bottom: 6px;
+            color: white;
+        }
+
+        .items-per-page select, .sort-controls select {
+            padding: 9px 12px;
             border: 1px solid #ddd;
             border-radius: 8px;
             background-color: white;
-            font-size: 1rem;
+            font-size: 0.95rem;
             cursor: pointer;
             transition: all 0.2s;
             color: #5d4037;
+            width: 100%;
+            max-width: 100%;
         }
 
-        .items-per-page select:hover {
-            border-color: #d4af37;
-            box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
-        }
-
-        .sort-controls {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 1.05rem;
-        }
-
-        .sort-controls select {
-            padding: 9px 16px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            background-color: white;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            color: #5d4037;
-        }
-
-        .sort-controls select:hover {
+        .items-per-page select:hover, .sort-controls select:hover {
             border-color: #d4af37;
             box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
         }
@@ -196,16 +190,16 @@
         /* 网格布局样式 */
         .grid-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 25px;
-            padding: 30px;
+            grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
+            gap: 20px;
+            padding: 20px;
         }
 
         .product-card {
             background: white;
-            border-radius: 15px;
+            border-radius: 14px;
             overflow: hidden;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.06);
             transition: all 0.4s ease;
             position: relative;
             border: 1px solid #f0e6d8;
@@ -214,13 +208,13 @@
         }
 
         .product-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+            transform: translateY(-7px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.12);
         }
 
         .card-image {
             position: relative;
-            height: 250px;
+            height: 210px;
             overflow: hidden;
             cursor: pointer;
         }
@@ -233,60 +227,60 @@
         }
 
         .product-card:hover .card-image img {
-            transform: scale(1.05);
+            transform: scale(1.03);
         }
 
         .magnify-icon {
             position: absolute;
-            bottom: 15px;
-            right: 15px;
+            bottom: 12px;
+            right: 12px;
             background: rgba(212, 175, 55, 0.85);
             color: white;
-            width: 40px;
-            height: 40px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 18px;
+            font-size: 16px;
             transition: all 0.3s ease;
-            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .magnify-icon:hover {
             background: #d4af37;
-            transform: scale(1.15);
+            transform: scale(1.1);
         }
 
         .card-content {
-            padding: 20px;
+            padding: 16px;
         }
 
         .card-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
 
         .product-id {
             background: #f5f0e6;
             color: #8b5a2b;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 0.9rem;
+            padding: 4px 10px;
+            border-radius: 16px;
+            font-size: 0.8rem;
             font-weight: 600;
         }
 
         .product-status {
-            padding: 6px 15px;
+            padding: 5px 12px;
             border-radius: 50px;
             font-weight: 500;
-            font-size: 0.95rem;
+            font-size: 0.85rem;
             display: inline-block;
-            min-width: 80px;
+            min-width: 70px;
             text-align: center;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
         }
 
         .status.available {
@@ -300,51 +294,55 @@
         }
 
         .product-name {
-            font-size: 1.4rem;
+            font-size: 1.2rem;
             color: #5d4037;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             font-weight: 700;
+            line-height: 1.3;
         }
 
         .product-category {
             display: inline-block;
             background: #f5f0e6;
             color: #8b5a2b;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            margin-bottom: 15px;
+            padding: 4px 12px;
+            border-radius: 16px;
+            font-size: 0.8rem;
+            margin-bottom: 10px;
         }
 
         .product-detail {
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             color: #7f6e5e;
-            line-height: 1.6;
-            margin-bottom: 20px;
-            height: 60px;
+            line-height: 1.5;
+            margin-bottom: 15px;
+            height: auto;
             overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
         }
 
         .product-price {
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             color: #d4af37;
             font-weight: 700;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
         }
 
         .product-quantity {
             color: #7f6e5e;
-            font-size: 1rem;
-            margin-bottom: 15px;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
         }
 
         .pagination {
             display: flex;
-            justify-content: center;
-            padding: 28px;
-            gap: 14px;
             flex-wrap: wrap;
-            border-top: 1px solid #f0e6d8;
+            justify-content: center;
+            padding: 20px 15px;
+            gap: 8px;
+            border-top: 1px solid #f0极速加载e6d8;
             background-color: #fcf9f4;
             position: relative;
         }
@@ -360,44 +358,48 @@
         }
 
         .pagination button {
-            padding: 10px 22px;
+            padding: 8px 16px;
             background-color: white;
             border: 1px solid #e1d9cc;
-            border-radius: 10px;
+            border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s ease;
             color: #8b5a2b;
             font-weight: 500;
             display: flex;
             align-items: center;
-            gap: 6px;
-            box-shadow: 0 3px 7px rgba(0, 0, 0, 0.05);
-            font-size: 1.05rem;
+            justify-content: center;
+            gap: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            font-size: 0.95rem;
+            min-width: 36px;
+            min-height: 36px;
         }
 
         .pagination button:not([disabled]):hover {
             background-color: #d4af37;
             color: white;
             border-color: #d4af37;
-            transform: translateY(-3px);
-            box-shadow: 0 6px 10px rgba(212, 175, 55, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(212, 175, 55, 0.3);
         }
 
         .pagination button[disabled] {
             opacity: 0.4;
             cursor: not-allowed;
+            transform: none !important;
         }
 
         .page-number {
-            min-width: 45px;
-            min-height: 45px;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
             transition: all 0.3s ease;
-            font-size: 1.1rem;
+            font-size: 1rem;
             border-radius: 8px;
+            min-width: 36px;
+            min-height: 36px;
         }
 
         .page-number:hover:not(.active) {
@@ -409,69 +411,56 @@
             color: white;
             border-color: #d4af37;
             font-weight: 600;
-            box-shadow: 0 6px 10px rgba(212, 175, 55, 0.2);
+            box-shadow: 0 4px 8px rgba(212, 175, 55, 0.2);
         }
 
         .page-info {
             display: flex;
             align-items: center;
-            gap: 10px;
-            margin-top: 16px;
+            gap: 8px;
+            margin-top: 12px;
             width: 100%;
             justify-content: center;
-            font-size: 1.05rem;
+            font-size: 0.95rem;
             color: #a67c52;
         }
-
-        @media (max-width: 1200px) {
-            .grid-container {
-                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            }
+        
+        .mobile-nav-toggle {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            background: #d4af37;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 15px 22px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+            font-weight: 600;
+            font-size: 1rem;
+        }
+        
+        .mobile-nav-panel {
+            display: none;
+            position: fixed;
+            bottom: 70px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 18px;
+            padding: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            z-index: 900;
+            backdrop-filter: blur(10px);
+            border: 1px solid #d4af37;
+            flex-direction: column;
+            gap: 10px;
+            min-width: 250px;
         }
 
-        @media (max-width: 992px) {
-            .grid-container {
-                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-                gap: 20px;
-            }
-            
-            .card-image {
-                height: 220px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .dashboard-header {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            
-            .controls {
-                width: 100%;
-                justify-content: center;
-            }
-            
-            .search-box input {
-                width: 100%;
-            }
-            
-            .items-per-page, .sort-controls {
-                width: 100%;
-                justify-content: space-between;
-                max-width: 400px;
-            }
-            
-            .grid-container {
-                grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
-                padding: 20px;
-            }
-            
-            h1 {
-                font-size: 2.2rem;
-            }
-        }
-
-        /* 图片模态框样式 - 完整保留并优化 */
+        /* 图片模态框样式 - 移动优化版 */
         #imageModal {
             display: none;
             position: fixed;
@@ -481,9 +470,10 @@
             width: 100%;
             height: 100%;
             overflow: auto;
-            background-color: rgba(0, 0, 0, 0.95);
+            background-color: rgba(0, 0, 0, 0.98);
             backdrop-filter: blur(6px);
             animation: fadeIn 0.4s ease;
+            touch-action: manipulation;
         }
 
         .modal-wrapper {
@@ -491,14 +481,14 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            padding: 30px;
+            padding: 15px;
         }
 
         .modal-content-container {
             position: relative;
-            width: 92%;
-            max-width: 1300px;
-            height: 88vh;
+            width: 100%;
+            max-width: 100%;
+            height: 92vh;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -507,42 +497,43 @@
 
         .modal-content {
             max-width: 100%;
-            max-height: calc(88vh - 160px);
+            max-height: calc(92vh - 140px);
             object-fit: contain;
-            border-radius: 10px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+            border-radius: 8px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
             transition: all 0.4s ease;
+            touch-action: pinch-zoom;
         }
 
         #caption {
             text-align: center;
             color: #fff;
-            padding: 20px 0 15px;
-            font-size: 1.7rem;
+            padding: 15px 0;
+            font-size: 1.3rem;
             font-weight: 500;
             width: 100%;
-            margin: 15px 0;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            margin: 10px 0;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
         }
 
         .close {
             position: absolute;
-            top: 30px;
-            right: 40px;
+            top: 20px;
+            right: 20px;
             color: #f1f1f1;
-            font-size: 45px;
+            font-size: 36px;
             font-weight: bold;
             transition: all 0.3s;
             cursor: pointer;
             z-index: 10001;
             background: rgba(0,0,0,0.5);
             border-radius: 50%;
-            width: 60px;
-            height: 60px;
+            width: 50px;
+            height: 50px;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
         }
 
         .close:hover,
@@ -554,16 +545,16 @@
 
         .modal-controls {
             position: absolute;
-            bottom: 80px;
+            bottom: 60px;
             display: flex;
+            flex-wrap: wrap;
             justify-content: center;
-            gap: 15px;
+            gap: 8px;
             width: 100%;
-            padding: 15px 0;
-            max-width: 680px;
+            padding: 10px 0;
+            max-width: 100%;
             margin: 0 auto;
-            left: 50%;
-            transform: translateX(-50%);
+            left: 0;
             z-index: 100;
         }
 
@@ -571,23 +562,29 @@
             background-color: rgba(212, 175, 55, 0.9);
             color: white;
             border: none;
-            padding: 12px 22px;
+            padding: 10px 16px;
             border-radius: 50px;
             cursor: pointer;
-            font-size: 1.15rem;
+            font-size: 1rem;
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
-            gap: 8px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.25);
+            justify-content: center;
+            gap: 6px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
             letter-spacing: 0.5px;
             font-weight: 500;
+            min-width: 120px;
+        }
+
+        .modal-btn i {
+            font-size: 0.9rem;
         }
 
         .modal-btn:hover {
             background-color: #c5a028;
-            transform: translateY(-4px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.35);
         }
 
         .modal-nav {
@@ -597,18 +594,18 @@
             background: rgba(30, 40, 50, 0.85);
             color: white;
             border: none;
-            padding: 16px;
+            padding: 12px;
             cursor: pointer;
-            font-size: 32px;
+            font-size: 26px;
             border-radius: 50%;
-            width: 70px;
-            height: 70px;
+            width: 52px;
+            height: 52px;
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 10;
             transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            box-shadow: 极速加载0 4px 10px rgba(0, 0, 0, 0.3);
         }
 
         .modal-nav:hover {
@@ -618,11 +615,11 @@
         }
 
         #prevBtn {
-            left: 30px;
+            left: 12px;
         }
 
         #nextBtn {
-            right: 30px;
+            right: 12px;
         }
         
         /* 动画定义 */
@@ -634,7 +631,7 @@
         @keyframes fadeInDown {
             from {
                 opacity: 0;
-                transform: translateY(-20px);
+                transform: translateY(-15px);
             }
             to {
                 opacity: 1;
@@ -645,7 +642,7 @@
         @keyframes slideUp {
             from {
                 opacity: 0;
-                transform: translateY(20px);
+                transform: translateY(15px);
             }
             to {
                 opacity: 1;
@@ -655,7 +652,7 @@
         
         @keyframes zoomIn {
             from {
-                transform: scale(0.8);
+                transform: scale(0.9);
                 opacity: 0;
             }
             to {
@@ -667,20 +664,134 @@
         .info-panel {
             display: flex;
             justify-content: center;
-            gap: 20px;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 15px;
-            border-radius: 10px;
-            margin-top: 15px;
             flex-wrap: wrap;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 10px;
+            max-width: 100%;
+            font-size: 0.8rem;
         }
         
         .info-item {
             color: #ffd700;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             display: flex;
             align-items: center;
             gap: 5px;
+            flex-wrap: wrap;
+            text-align: center;
+        }
+
+        /* 响应式媒体查询 */
+        @media (min-width: 576px) {
+            .grid-container {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+                gap: 25px;
+            }
+            
+            .card-image {
+                height: 220px;
+            }
+            
+            .modal-content {
+                max-height: calc(88vh - 160px);
+            }
+        }
+
+        @media (min-width: 768px) {
+            body {
+                padding: 30px 20px;
+            }
+            
+            .dashboard-header {
+                padding: 25px 30px;
+                flex-wrap: nowrap;
+            }
+            
+            .dashboard-header h2 {
+                font-size: 1.4rem;
+                width: auto;
+            }
+            
+            .controls {
+                width: auto;
+            }
+            
+            .control-group {
+                flex-wrap: nowrap;
+            }
+            
+            .filter-section {
+                min-width: auto;
+            }
+            
+            .search-box {
+                width: 260px;
+            }
+            
+            .search-box input:focus {
+                width: 300px;
+            }
+            
+            .grid-container {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+                padding: 30px;
+                gap: 30px;
+            }
+            
+            .card-image {
+                height: 240px;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            h1:after {
+                width: 80px;
+                height: 4px;
+            }
+            
+            .subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .pagination {
+                padding: 25px 20px;
+                gap: 12px;
+            }
+            
+            .modal-controls {
+                flex-wrap: nowrap;
+                gap: 15px;
+            }
+        }
+
+        @media (min-width: 992px) {
+            .grid-container {
+                grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+        }
+
+        /* 移动端特定功能 */
+        @media (max-width: 768px) {
+            .mobile-nav-toggle {
+                display: block;
+            }
+            
+            .mobile-nav-panel {
+                display: flex;
+            }
+            
+            .pagination > button:not(#prevPage, #nextPage) {
+                display: none;
+            }
         }
     </style>
 </head>
@@ -689,40 +800,37 @@
     <div class="container">
         <header>
             <h1><i class="fas fa-gem"></i> 珠宝饰品设计稿</h1>
-            <div class="subtitle">精品珠宝设计展示 | 专为高级珠宝打造的网格布局</div>
+            <div class="subtitle">精品珠宝设计展示 | 专为移动端优化的网格布局</div>
         </header>
         
         <section class="dashboard">
             <div class="dashboard-header">
-                <h2><i class="fas fa-crown"></i> 珠宝饰品设计稿收藏库</h2>
+                <h2><i class="fas fa-crown"></i> 珠宝设计收藏库</h2>
                 <div class="controls">
                     <div class="search-box">
                         <i class="fas fa-search search-icon"></i>
-                        <input type="text" id="searchInput" placeholder="搜索珠宝名称、描述或类别...">
+                        <input type="text" id="searchInput" placeholder="搜索珠宝...">
                     </div>
-                    <div class="items-per-page">
-                        <label for="itemsPerPage">每页显示：</label>
-                        <select id="itemsPerPage">
-                            <option value="6">6 条</option>
-                            <option value="12" selected>12 条</option>
-                            <option value="24">24 条</option>
-                            <option value="48">48 条</option>
-                        </select>
-                    </div>
-                    <div class="sort-controls">
-                        <label for="sortField">排序：</label>
-                        <select id="sortField">
-                            <option value="id">ID</option>
-                            <option value="name">产品名称</option>
-                            <option value="category">类别</option>
-                            <option value="price">价格</option>
-                            <option value="quantity">库存</option>
-                            <option value="status">状态</option>
-                        </select>
-                        <select id="sortDirection">
-                            <option value="asc">升序</option>
-                            <option value="desc">降序</option>
-                        </select>
+                    <div class="control-group">
+                        <div class="filter-section items-per-page">
+                            <label for="itemsPerPage">每页显示:</label>
+                            <select id="itemsPerPage">
+                                <option value="4">4 条</option>
+                                <option value="8" selected>8 条</option>
+                                <option value="12">12 条</option>
+                                <option value="20">20 条</option>
+                            </select>
+                        </div>
+                        <div class="filter-section sort-controls">
+                            <label for="sortField">排序:</label>
+                            <select id="sortField">
+                                <option value="name">产品名称</option>
+                                <option value="id">ID</option>
+                                <option value="category">类别</option>
+                                <option value="price">价格</option>
+                                <option value="quantity">库存</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -739,13 +847,45 @@
                 <button id="lastPage" title="末页"><i class="fas fa-step-forward"></i></button>
                 
                 <div class="page-info">
-                    显示 <span id="startRow">1</span> - <span id="endRow">12</span> 条，共 <span id="totalRows">20</span> 条记录
+                    显示 <span id="startRow">1</span> - <span id="endRow">8</span> 条，共 <span id="totalRows">20</span> 条记录
                 </div>
             </div>
         </section>
+        
+        <button class="mobile-nav-toggle" id="mobileNavToggle">
+            <i class="fas fa-cog"></i> 页面导航
+        </button>
+        
+        <div class="mobile-nav-panel" id="mobileNavPanel">
+            <div class="control-group">
+                <div class="filter-section items-per-page">
+                    <label for="mobileItemsPerPage">每页显示:</label>
+                    <select id="mobileItemsPerPage">
+                        <option value="4">4 条</option>
+                        <option value="8" selected>8 条</option>
+                        <option value="12">12 条</option>
+                        <option value="20">20 条</option>
+                    </select>
+                </div>
+                <div class="filter-section sort-controls">
+                    <label for="mobileSortField">排序:</label>
+                    <select id="mobileSortField">
+                        <option value="name">产品名称</option>
+                        <option value="id">ID</option>
+                        <option value="category">类别</option>
+                        <option value="price">价格</option>
+                        <option value="quantity">库存</option>
+                    </select>
+                </div>
+            </div>
+            <div class="control-group">
+                <button class="mobile-nav-btn" id="mobileFirstPage"><i class="fas fa-angle-double-left"></i> 首页</button>
+                <button class="mobile-nav-btn" id="mobileLastPage">末页 <i class="fas fa-angle-double-right"></i></button>
+            </div>
+        </div>
     </div>
 
-    <!-- 图片模态框 - 完整保留 -->
+    <!-- 图片模态框 - 移动优化版 -->
     <div id="imageModal">
         <span class="close">&times;</span>
         <button class="modal-nav" id="prevBtn"><i class="fas fa-chevron-left"></i></button>
@@ -762,15 +902,15 @@
                     <button class="modal-btn" id="resetBtn"><i class="fas fa-redo"></i> 重置</button>
                 </div>
                 <div class="info-panel">
-                    <div class="info-item"><i class="fas fa-info-circle"></i> 提示：使用键盘方向键浏览图片</div>
-                    <div class="info-item"><i class="fas fa-info-circle"></i> +/- 放大缩小 | R 旋转图片</div>
+                    <div class="info-item"><i class="fas fa-info-circle"></i> 提示：左右滑动切换图片</div>
+                    <div class="info-item"><i class="fas fa-hand-pointer"></i> 双指捏合缩放图片</div>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // 珠宝饰品数据
+        // 珠宝饰品数据 - 修正后版本
         const products = [
             {
                 id: 101, name: "钻石项链", category: "项链", price: 12999, quantity: 5, status: "available",
@@ -779,7 +919,7 @@
             },
             {
                 id: 102, name: "蓝宝石戒指", category: "戒指", price: 8999, quantity: 8, status: "available",
-                image: "https://images.unsplash.com/photo-1599643477877-530eb83abc8e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                image: "https://images.unsplash.com/photo-1599643477877-530eb83abc8e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8极速加载MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
                 description: "铂金镶嵌3克拉天然蓝宝石，周围镶嵌小钻石"
             },
             {
@@ -854,7 +994,7 @@
             },
             {
                 id: 117, name: "翡翠戒指", category: "戒指", price: 18500, quantity: 3, status: "available",
-                image: "https://images.unsplash.com/photo-1589927265396-89c10f5b6c75?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                image: "https://images.unsplash.com/photo-1589927265396-89c10f5b6c75?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q极速加载=80",
                 description: "18K黄金镶嵌帝王绿翡翠，配钻石环绕"
             },
             {
@@ -876,8 +1016,8 @@
 
         // 当前状态
         let currentPage = 1;
-        let itemsPerPage = parseInt(document.getElementById('itemsPerPage').value);
-        let sortField = 'id';
+        let itemsPerPage = 8;
+        let sortField = 'name';
         let sortDirection = 'asc';
         let currentProducts = [...products];
         let currentImageIndex = 0;
@@ -887,11 +1027,16 @@
         const gridContainer = document.getElementById('gridContainer');
         const itemsPerPageSelect = document.getElementById('itemsPerPage');
         const sortFieldSelect = document.getElementById('sortField');
-        const sortDirectionSelect = document.getElementById('sortDirection');
         const startRowEl = document.getElementById('startRow');
         const endRowEl = document.getElementById('endRow');
         const totalRowsEl = document.getElementById('totalRows');
         const searchInput = document.getElementById('searchInput');
+        const mobileNavToggle = document.getElementById('mobileNavToggle');
+        const mobileNavPanel = document.getElementById('mobileNavPanel');
+        const mobileItemsPerPage = document.getElementById('mobileItemsPerPage');
+        const mobileSortField = document.getElementById('mobileSortField');
+        const mobileFirstPage = document.getElementById('mobileFirstPage');
+        const mobileLastPage = document.getElementById('mobileLastPage');
 
         // 图片模态框相关元素
         const modal = document.getElementById('imageModal');
@@ -908,6 +1053,9 @@
         // 图片缩放状态
         let currentScale = 1;
         let currentRotation = 0;
+        let startX = 0;
+        let touchStartX = 0;
+        let touchStartY = 0;
 
         // 初始化
         document.addEventListener('DOMContentLoaded', function() {
@@ -930,10 +1078,30 @@
                 renderGrid();
             });
             
-            // 排序方向变化
-            sortDirectionSelect.addEventListener('change', function() {
-                sortDirection = this.value;
+            // 移动端设置
+            mobileItemsPerPage.addEventListener('change', function() {
+                itemsPerPage = parseInt(this.value);
+                currentPage = 1;
                 renderGrid();
+            });
+            
+            mobileSortField.addEventListener('change', function() {
+                sortField = this.value;
+                renderGrid();
+            });
+            
+            mobileFirstPage.addEventListener('click', function() {
+                currentPage = 1;
+                renderGrid();
+            });
+            
+            mobileLastPage.addEventListener('click', function() {
+                currentPage = Math.ceil(currentProducts.length / itemsPerPage);
+                renderGrid();
+            });
+            
+            mobileNavToggle.addEventListener('click', function() {
+                mobileNavPanel.style.display = mobileNavPanel.style.display === 'flex' ? 'none' : 'flex';
             });
 
             // 分页按钮
@@ -1073,6 +1241,64 @@
                     }
                 }
             });
+            
+            // 触摸事件处理
+            modalImg.addEventListener('touchstart', function(e) {
+                if (e.touches.length === 1) {
+                    // 单指触摸
+                    touchStartX = e.touches[0].clientX;
+                    touchStartY = e.touches[0].clientY;
+                }
+            });
+            
+            modalImg.addEventListener('touchend', function(e) {
+                if (e.changedTouches.length === 1) {
+                    const touchEndX = e.changedTouches[0].clientX;
+                    const touchEndY = e.changedTouches[0].clientY;
+                    const deltaX = touchEndX - touchStartX;
+                    const deltaY = touchEndY - touchStartY;
+                    
+                    // 水平滑动距离大于垂直且足够长
+                    if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 50) {
+                        if (deltaX > 0) {
+                            // 右滑
+                            navigateImage(-1);
+                        } else {
+                            // 左滑
+                            navigateImage(1);
+                        }
+                    }
+                }
+            });
+            
+            // 双指缩放
+            let initialDistance = null;
+            
+            modalImg.addEventListener('touchmove', function(e) {
+                if (e.touches.length === 2) {
+                    e.preventDefault();
+                    
+                    const touch1 = e.touches[0];
+                    const touch2 = e.touches[1];
+                    
+                    const distance = Math.sqrt(
+                        Math.pow(touch2.clientX - touch1.clientX, 2) +
+                        Math.pow(touch2.clientY - touch1.clientY, 2)
+                    );
+                    
+                    if (initialDistance === null) {
+                        initialDistance = distance;
+                    }
+                    
+                    const scaleFactor = distance / initialDistance;
+                    currentScale = Math.max(0.4, scaleFactor);
+                    updateImageTransform();
+                }
+            });
+            
+            modalImg.addEventListener('touchend', function() {
+                initialDistance = null;
+            });
         }
 
         function setupImageClickEvents() {
@@ -1119,6 +1345,11 @@
             
             // 查找当前产品在列表中的位置
             currentImageIndex = products.findIndex(p => p.id === product.id);
+            
+            // 在移动端自动收起导航面板
+            if (window.innerWidth <= 768) {
+                mobileNavPanel.style.display = 'none';
+            }
         }
 
         function navigateImage(direction) {
@@ -1196,7 +1427,7 @@
             gridContainer.innerHTML = '';
             
             if (paginatedProducts.length === 0) {
-                gridContainer.innerHTML = `<div class="no-results">没有找到匹配的珠宝设计</div>`;
+                gridContainer.innerHTML = `<div class="no-results" style="padding:30px;text-align:center;">没有找到匹配的珠宝设计</div>`;
                 renderPagination(0);
                 return;
             }
@@ -1204,7 +1435,7 @@
             paginatedProducts.forEach((product, index) => {
                 const card = document.createElement('div');
                 card.className = 'product-card';
-                card.style.animationDelay = `${index * 0.05}s`;
+                card.style.animationDelay = `${index * 0.03}s`;
                 
                 card.innerHTML = `
                     <div class="card-image">
@@ -1251,8 +1482,8 @@
                 return;
             }
             
-            // 添加页码按钮
-            const maxVisiblePages = 5; // 最多显示多少个页码按钮
+            // 添加页码按钮 - 在移动端只显示少量页码
+            const maxVisiblePages = window.innerWidth > 768 ? 5 : 3;
             let startPage, endPage;
             
             if (totalPages <= maxVisiblePages) {

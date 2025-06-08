@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商品展示 - 带分页功能</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4ecf7 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        h1:after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(to right, #3498db, #2c3e50);
+            margin: 15px auto;
+            border-radius: 2px;
+        }
+        
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+        
+        .dashboard {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+        
+        .dashboard-header {
+            padding: 20px 25px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(to right, #3498db, #2c3e50);
+            color: white;
+        }
+        
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        .search-box {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        
+        .search-box input {
+            padding: 10px 15px 10px 40px;
+            border: none;
+            border-radius: 50px;
+            background-color: rgba(255, 255, 255, 0.9);
+            width: 250px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .search-box input:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3);
+            width: 300px;
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            color: #7f8c8d;
+        }
+        
+        .items-per-page {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .items-per-page select {
+            padding: 8px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            background-color: white;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 900px;
+        }
+        
+        thead th {
+            background-color: #f8f9fa;
+            padding: 16px 15px;
+            text-align: left;
+            color: #2c3e50;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid #3498db;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        thead th:first-child {
+            width: 120px;
+        }
+        
+        thead th:nth-child(2) {
+            width: 80px;
+        }
+        
+        thead th:hover {
+            background-color: #edf5fa;
+        }
+        
+        thead th.sort-asc:after {
+            content: "▴";
+            position: absolute;
+            right: 10px;
+            color: #3498db;
+        }
+        
+        thead th.sort-desc:after {
+            content: "▾";
+            position: absolute;
+            right: 10px;
+            color: #3498db;
+        }
+        
+        tbody tr {
+            transition: background-color 0.2s;
+        }
+        
+        tbody tr:nth-child(even) {
+            background-color: #f9fbfd;
+        }
+        
+        tbody tr:hover {
+            background-color: #e8f4fe;
+        }
+        
+        tbody td {
+            padding: 14px 15px;
+            color: #495057;
+            border-bottom: 1px solid #eee;
+            vertical-align: middle;
+        }
+        
+        tbody td:first-child, tbody td:nth-child(2) {
+            text-align: center;
+        }
+        
+        .product-img {
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+            border: 1px solid #eee;
+            padding: 5px;
+        }
+        
+        .status {
+            padding: 5px 12px;
+            border-radius: 50px;
+            font-weight: 500;
+            font-size: 0.85rem;
+            display: inline-block;
+        }
+        
+        .status.available {
+            background-color: #e8f7ef;
+            color: #27ae60;
+        }
+        
+        .status.out-of-stock {
+            background-color: #fdeaea;
+            color: #e74c3c;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            padding: 25px;
+            gap: 10px;
+            flex-wrap: wrap;
+            border-top: 1px solid #eee;
+            background-color: #f8fafc;
+        }
+        
+        .pagination button {
+            padding: 8px 15px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #3498db;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .pagination button:not([disabled]):hover {
+            background-color: #3498db;
+            color: white;
+            border-color: #3498db;
+        }
+        
+        .pagination button[disabled] {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .page-number {
+            min-width: 36px;
+            text-align: center;
+        }
+        
+        .page-number.active {
+            background-color: #3498db;
+            color: white;
+            border-color: #3498db;
+        }
+        
+        .page-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+            width: 100%;
+            justify-content: center;
+            font-size: 0.95rem;
+            color: #7f8c8d;
+        }
+        
+        @media (max-width: 992px) {
+            .product-img {
+                width: 80px;
+                height: 80px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .controls {
+                width: 100%;
+            }
+            
+            .search-box input {
+                width: 100%;
+            }
+            
+            .items-per-page {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .product-img {
+                width: 70px;
+                height: 70px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>商品展示表格</h1>
+            <div class="subtitle">带分页功能与图片显示 | 当前数据：电子产品库存</div>
+        </header>
+        
+        <section class="dashboard">
+            <div class="dashboard-header">
+                <h2><i class="fas fa-images"></i> 商品库存列表</h2>
+                <div class="controls">
+                    <div class="search-box">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" id="searchInput" placeholder="搜索商品...">
+                    </div>
+                    <div class="items-per-page">
+                        <label for="itemsPerPage">每页显示：</label>
+                        <select id="itemsPerPage">
+                            <option value="5">5 条</option>
+                            <option value="10" selected>10 条</option>
+                            <option value="20">20 条</option>
+                            <option value="50">50 条</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="table-container">
+                <table id="productTable">
+                    <thead>
+                        <tr>
+                            <th data-sort="id">ID <i class="fas fa-sort"></i></th>
+                            <th data-sort="image">图片</th>
+                            <th data-sort="name">产品名称 <i class="fas fa-sort"></i></th>
+                            <th data-sort="category">类别 <i class="fas fa-sort"></i></th>
+                            <th data-sort="price">价格 <i class="fas fa-sort"></i></th>
+                            <th data-sort="quantity">库存 <i class="fas fa-sort"></i></th>
+                            <th data-sort="status">状态 <i class="fas fa-sort"></i></th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <!-- Table rows will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="pagination">
+                <button id="firstPage" title="首页"><i class="fas fa-step-backward"></i></button>
+                <button id="prevPage" title="上一页"><i class="fas fa-chevron-left"></i></button>
+                
+                <!-- Page numbers will be generated here -->
+                
+                <button id="nextPage" title="下一页"><i class="fas fa-chevron-right"></i></button>
+                <button id="lastPage" title="末页"><i class="fas fa-step-forward"></i></button>
+                
+                <div class="page-info">
+                    显示 <span id="startRow">1</span> - <span id="endRow">10</span> 条，共 <span id="totalRows">120</span> 条记录
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // 模拟数据（添加了图片URL字段）
+        const products = [
+            {id: 101, name: "智能手机 X1", category: "手机", price: 2999, quantity: 45, status: "available", image: "https://img.freepik.com/free-photo/new-smartphone-black-background-mock-up_53876-97389.jpg"},
+            {id: 102, name: "笔记本电脑 Pro", category: "电脑", price: 7999, quantity: 18, status: "available", image: "https://img.freepik.com/free-photo/laptop-mockup-concept_23-2148621157.jpg"},
+            {id: 103, name: "蓝牙耳机 Air", category: "耳机", price: 899, quantity: 0, status: "out-of-stock", image: "https://img.freepik.com/free-photo/wireless-earbuds_53876-96805.jpg"},
+            {id: 104, name: "智能手表 3", category: "可穿戴", price: 1299, quantity: 32, status: "available", image: "https://img.freepik.com/free-photo/smart-watch_53876-94783.jpg"},
+            {id: 105, name: "平板电脑 Lite", category: "平板", price: 2299, quantity: 24, status: "available", image: "https://img.freepik.com/free-photo/white-tablet-screen-mock-up-concept_53876-89852.jpg"},
+            {id: 106, name: "游戏主机 Elite", category: "游戏", price: 4599, quantity: 8, status: "available", image: "https://img.freepik.com/free-photo/gaming-console_53876-97308.jpg"},
+            {id: 107, name: "数码相机 Pro", category: "相机", price: 5899, quantity: 12, status: "available", image: "https://img.freepik.com/free-photo/digital-camera_1409-8890.jpg"},
+            {id: 108, name: "无线鼠标", category: "配件", price: 159, quantity: 76, status: "available", image: "https://img.freepik.com/free-psd/wireless-computer-mouse-isolated-transparent-background_191095-9015.jpg"},
+            {id: 109, name: "机械键盘 RGB", category: "配件", price: 599, quantity: 21, status: "available", image: "https://img.freepik.com/free-photo/keyboard-computer-peripherals-close-up-view_1418-1480.jpg"},
+            {id: 110, name: "4K显示器", category: "显示器", price: 2899, quantity: 14, status: "available", image: "https://img.freepik.com/free-photo/wide-computer-monitor-displaying-technology-interface_53876-94884.jpg"},
+            {id: 111, name: "路由器 AX6000", category: "网络", price: 899, quantity: 9, status: "available", image: "https://img.freepik.com/free-psd/wireless-router-mock-up_1310-1528.jpg"},
+            {id: 112, name: "外置硬盘 2TB", category: "存储", price: 699, quantity: 27, status: "available", image: "https://img.freepik.com/free-photo/external-hard-disk_53876-97381.jpg"},
+            {id: 113, name: "便携投影仪", category: "显示", price: 1899, quantity: 0, status: "out-of-stock", image: "https://img.freepik.com/free-psd/portable-projector-mock-up_1310-1964.jpg"},
+            {id: 114, name: "蓝牙音箱", category: "音频", price: 399, quantity: 41, status: "available", image: "https://img.freepik.com/free-photo/bluetooth-speaker_53876-89035.jpg"},
+            {id: 115, name: "电子阅读器", category: "阅读", price: 999, quantity: 17, status: "available", image: "https://img.freepik.com/free-photo/e-reader_53876-94814.jpg"},
+            {id: 116, name: "游戏手柄", category: "游戏", price: 499, quantity: 6, status: "available", image: "https://img.freepik.com/free-photo/gaming-gear-joystick_53876-94826.jpg"},
+            {id: 117, name: "VR眼镜", category: "可穿戴", price: 2799, quantity: 3, status: "available", image: "https://img.freepik.com/free-psd/virtual-reality-headset-mock-up_1310-1779.jpg"},
+            {id: 118, name: "无人机 Mini", category: "摄影", price: 3499, quantity: 7, status: "available", image: "https://img.freepik.com/free-photo/drone-with-camera_53876-97388.jpg"},
+            {id: 119, name: "打印机 Pro", category: "办公", price: 1899, quantity: 15, status: "available", image: "https://img.freepik.com/free-photo/printer_1203-8501.jpg"},
+            {id: 120, name: "扫描仪", category: "办公", price: 1099, quantity: 0, status: "out-of-stock", image: "https://img.freepik.com/free-psd/flat-scanner-mock-up_23-2148932946.jpg"},
+        ];
+        
+        // 当前状态
+        let currentPage = 1;
+        let itemsPerPage = parseInt(document.getElementById('itemsPerPage').value);
+        let sortField = 'id';
+        let sortDirection = 'asc';
+        let currentProducts = [...products];
+        
+        // DOM元素
+        const tableBody = document.getElementById('tableBody');
+        const itemsPerPageSelect = document.getElementById('itemsPerPage');
+        const startRowEl = document.getElementById('startRow');
+        const endRowEl = document.getElementById('endRow');
+        const totalRowsEl = document.getElementById('totalRows');
+        const searchInput = document.getElementById('searchInput');
+        
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            totalRowsEl.textContent = products.length;
+            renderTable();
+            setupEventListeners();
+        });
+        
+        function setupEventListeners() {
+            // 每页显示数量变化
+            itemsPerPageSelect.addEventListener('change', function() {
+                itemsPerPage = parseInt(this.value);
+                currentPage = 1;
+                renderTable();
+            });
+            
+            // 分页按钮
+            document.getElementById('firstPage').addEventListener('click', function() {
+                currentPage = 1;
+                renderTable();
+            });
+            
+            document.getElementById('prevPage').addEventListener('click', function() {
+                if (currentPage > 1) {
+                    currentPage--;
+                    renderTable();
+                }
+            });
+            
+            document.getElementById('nextPage').addEventListener('click', function() {
+                const totalPages = Math.ceil(currentProducts.length / itemsPerPage);
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    renderTable();
+                }
+            });
+            
+            document.getElementById('lastPage').addEventListener('click', function() {
+                currentPage = Math.ceil(currentProducts.length / itemsPerPage);
+                renderTable();
+            });
+            
+            // 搜索
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                
+                if (searchTerm === '') {
+                    currentProducts = [...products];
+                } else {
+                    currentProducts = products.filter(product => {
+                        return (
+                            product.name.toLowerCase().includes(searchTerm) ||
+                            product.category.toLowerCase().includes(searchTerm) ||
+                            product.status.toLowerCase().includes(searchTerm) ||
+                            product.id.toString().includes(searchTerm)
+                        );
+                    });
+                }
+                
+                currentPage = 1;
+                totalRowsEl.textContent = currentProducts.length;
+                renderTable();
+            });
+            
+            // 表格排序
+            document.querySelectorAll('th[data-sort]').forEach(header => {
+                header.addEventListener('click', function() {
+                    const field = this.dataset.sort;
+                    
+                    // 图片列不排序
+                    if (field === 'image') return;
+                    
+                    if (sortField === field) {
+                        sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+                    } else {
+                        sortField = field;
+                        sortDirection = 'asc';
+                    }
+                    
+                    // 更新排序指示器
+                    document.querySelectorAll('th').forEach(th => {
+                        th.classList.remove('sort-asc', 'sort-desc');
+                    });
+                    
+                    this.classList.add(sortDirection === 'asc' ? 'sort-asc' : 'sort-desc');
+                    
+                    renderTable();
+                });
+            });
+        }
+        
+        function renderTable() {
+            // 应用排序
+            const sortedProducts = [...currentProducts].sort((a, b) => {
+                let valueA, valueB;
+                
+                if (sortField === 'name' || sortField === 'category' || sortField === 'status') {
+                    valueA = a[sortField].toLowerCase();
+                    valueB = b[sortField].toLowerCase();
+                } else {
+                    valueA = a[sortField];
+                    valueB = b[sortField];
+                }
+                
+                if (valueA < valueB) return sortDirection === 'asc' ? -1 : 1;
+                if (valueA > valueB) return sortDirection === 'asc' ? 1 : -1;
+                return 0;
+            });
+            
+            // 计算分页
+            const totalItems = sortedProducts.length;
+            const totalPages = Math.ceil(totalItems / itemsPerPage);
+            
+            if (currentPage > totalPages && totalPages > 0) {
+                currentPage = totalPages;
+            }
+            
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
+            const paginatedProducts = sortedProducts.slice(startIndex, endIndex);
+            
+            // 更新显示信息
+            startRowEl.textContent = totalItems === 0 ? 0 : startIndex + 1;
+            endRowEl.textContent = endIndex;
+            totalRowsEl.textContent = totalItems;
+            
+            // 渲染表格行
+            tableBody.innerHTML = '';
+            
+            if (paginatedProducts.length === 0) {
+                tableBody.innerHTML = `<tr><td colspan="7" style="text-align: center; padding: 40px; color: #7f8c8d;">没有找到匹配的产品数据</td></tr>`;
+                renderPagination(0);
+                return;
+            }
+            
+            paginatedProducts.forEach(product => {
+                const row = document.createElement('tr');
+                
+                row.innerHTML = `
+                    <td>${product.id}</td>
+                    <td><img src="${product.image}" alt="${product.name}" class="product-img"></td>
+                    <td><strong>${product.name}</strong></td>
+                    <td>${product.category}</td>
+                    <td>¥${product.price.toLocaleString()}</td>
+                    <td>${product.quantity}</td>
+                    <td><span class="status ${product.status}">${product.status === 'available' ? '有货' : '缺货'}</span></td>
+                `;
+                
+                tableBody.appendChild(row);
+            });
+            
+            // 渲染分页控件
+            renderPagination(totalPages);
+        }
+        
+        function renderPagination(totalPages) {
+            // 先清除现有的页码按钮
+            const prevBtn = document.getElementById('prevPage');
+            const nextBtn = document.getElementById('nextPage');
+            const existingPageButtons = document.querySelectorAll('.page-number');
+            
+            existingPageButtons.forEach(btn => {
+                btn.remove();
+            });
+            
+            // 如果没有数据则不渲染分页按钮
+            if (totalPages === 0) {
+                return;
+            }
+            
+            // 添加页码按钮
+            const maxVisiblePages = 5; // 最多显示多少个页码按钮
+            let startPage, endPage;
+            
+            if (totalPages <= maxVisiblePages) {
+                startPage = 1;
+                endPage = totalPages;
+            } else {
+                // 计算起始和结束页码
+                const maxVisibleBeforeAfter = Math.floor(maxVisiblePages / 2);
+                startPage = Math.max(currentPage - maxVisibleBeforeAfter, 1);
+                endPage = startPage + maxVisiblePages - 1;
+                
+                if (endPage > totalPages) {
+                    endPage = totalPages;
+                    startPage = endPage - maxVisiblePages + 1;
+                }
+            }
+            
+            // 创建页码按钮
+            for (let i = startPage; i <= endPage; i++) {
+                const pageBtn = document.createElement('button');
+                pageBtn.className = 'page-number';
+                pageBtn.textContent = i;
+                pageBtn.dataset.page = i;
+                
+                if (i === currentPage) {
+                    pageBtn.classList.add('active');
+                }
+                
+                pageBtn.addEventListener('click', function() {
+                    currentPage = parseInt(this.dataset.page);
+                    renderTable();
+                });
+                
+                nextBtn.insertAdjacentElement('beforebegin', pageBtn);
+            }
+            
+            // 更新按钮状态
+            document.getElementById('firstPage').disabled = currentPage === 1;
+            document.getElementById('prevPage').disabled = currentPage === 1;
+            document.getElementById('nextPage').disabled = currentPage === totalPages;
+            document.getElementById('lastPage').disabled = currentPage === totalPages;
+        }
+    </script>
+</body>
+</html>
